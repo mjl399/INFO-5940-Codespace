@@ -1,92 +1,280 @@
-# INFO 5940 
-Welcome to the INFO 5940 repository. You will complete your work using [**GitHub Codespaces**](#about-github-codespaces) and save your progress in your own GitHub repository. This guide will walk you through setting up the development environment and running the test notebook.  
+# RAG Chat Application
 
-## Getting Started 
+A Retrieval-Augmented Generation (RAG) application that allows users to upload documents and interact with them through a conversational AI interface.
 
-### Step 1: Fork this repository 
-1. Click the **Fork** button (top right of this page).
-2. This will create a copy of the repo under **your own GitHub account**.
+## 📋 Features
 
-Forking creates a personal copy of the repo under **your** GitHub account.  
-- You can commit, push, and experiment freely.  
-- Your work stays separate from the official class materials.
+- ✅ Upload `.txt` and `.pdf` files
+- ✅ Multiple document support
+- ✅ Intelligent document chunking for efficient retrieval
+- ✅ Vector-based semantic search using ChromaDB and HuggingFace embeddings
+- ✅ Conversational interface with chat history using GPT-4o
+- ✅ Source document tracking for transparency
+- ✅ In-memory vector database for fast performance
 
-### Step 2: Open your forked repo Codespace
-1. Go to **your forked repo**.
-2. Click the green **Code** button and switch to the **Codespaces** tab.  
-3. Select **Create Codespace**.
-4. Wait a few minutes for the environment to finish setting up.
+## 🛠️ Requirements
 
-### Step 3: Verify your environment 
-Once the Codespace is ready: 
-1. If you are in `<your-file-name>.ipynb` in your codespace.
-2. Install the Python 3.11.13 Kernel.  In the top-right corner, click **Select Kernel**.
-    1. If **Install/Enable suggested extensions Python + Jupyter** appears, select it, and wait for the install to finish before moving on to the next step.
-    2. Select **Python Environments** choose **Python 3.11.13 (first option)**.
-3. Run the code block to check your setup. 
+All dependencies are listed in `requirements.txt`. Key packages include:
 
-## About GitHub Codespaces
+- **Streamlit**: Web interface
+- **LangChain**: RAG pipeline framework
+- **ChromaDB**: Vector database for document storage
+- **OpenAI**: Language model (GPT-4o)
+- **Sentence Transformers**: Local embeddings (HuggingFace)
+- **PyPDF**: PDF file parsing
 
-[Codespaces](https://docs.github.com/en/codespaces) is a complete software development and execution environment, running in the cloud, with its primary interface being a VSCode instance running in your browser.
+## 🚀 Setup Instructions
 
-Codespaces is not free, but their per-month [free quota](https://docs.github.com/en/billing/concepts/product-billing/github-codespaces#free-quota) is generous.  Codespaces is free under the [GitHub Student Developer Pack](https://education.github.com/pack#github-codespaces).
+### 1. Clone the Repository
 
-### Codespaces Tips
+```bash
+git clone <your-repo-url>
+cd <your-repo-name>
+git checkout assignment1
+```
 
-* Codespaces keep running even when you close your browser (but will time out and stop after a while)
-* Unless you're on a free plan, or within your free quota, costs acrue while the codespace is running, whether or not you have it open in your browser or are working on it
-* You can control when it's running, and the space it takes up.  Check out [GitHub's codespaces lifecycle documentation](https://docs.github.com/en/codespaces/about-codespaces/understanding-the-codespace-lifecycle)
+### 2. Install Dependencies
 
-## Sync Updates 
-To make sure your personal forked repository stays up to date with the original class repository, please follow these steps:
-1. Open your forked repo.
-2. At the top of the page, you should see a banner or menu option that shows whether your fork is behind the original repo.
-3. Click the **Sync fork** button.
-4. In the dropdown, choose **Update branch** to pull the latest changes from the original repo into your fork.
+The Codespace environment should automatically install dependencies from `requirements.txt`. If not, run:
 
-Optionally, you can also follow these steps to create a new branch on your fork:
-1. Open your **forked repository** on GitHub.  
-2. At the top of the page, next to the branch dropdown, click the **Branches** button.  
-3. In the **Branches** view, click the green **New Branch** button.  
-4. In the popup window, enter a branch name.  
-   - You can use any name you like, but it’s recommended to match the branch name used in class for better organization.  
-5. Under **Branch source**, select:  
-   - **Repository:** `AyhamB/INFO-5940-Codespace`  
-   - **Branch:** choose the branch you want to sync from (e.g., `streamlit`).  
-6. Click the green **Create New Branch** button.  
-7. Verify that you’re now back in **your fork**, on the new branch you just created.  
-8. Click the **Code** button and create a new Codespace (if you don’t already have one).  
-   - Make sure the Codespace is created from the **current branch**.
+```bash
+pip install -r requirements.txt
+```
+
+**Note:** If you encounter numpy compatibility issues, run:
+```bash
+pip install --force-reinstall numpy==1.24.3
+```
+
+### 3. API Key Configuration
+
+The application reads API keys from environment variables (configured in `.devcontainer/devcontainer.json`):
+
+- `API_KEY` or `OPENAI_API_KEY`: Your Cornell/OpenAI API key
+- `BASE_URL` or `OPENAI_BASE_URL`: API endpoint (default: `https://api.ai.it.cornell.edu`)
+
+**For Cornell Students:**
+- API keys are pre-configured in the devcontainer
+- No manual configuration needed
+
+**For Others:**
+Set your API key as an environment variable:
+```bash
+export OPENAI_API_KEY="your-api-key-here"
+```
+
+### 4. Run the Application
+
+```bash
+streamlit run chat_with_pdf.py
+```
+
+The application will open in your browser automatically. In Codespaces, click the "Open in Browser" button when prompted.
+
+## 📖 How to Use
+
+### Step 1: Upload Documents
+
+1. Click "Browse files" in the sidebar
+2. Select one or more `.txt` or `.pdf` files
+3. Click "Process Documents"
+4. Wait for processing to complete (you'll see progress indicators)
+
+### Step 2: Start Chatting
+
+1. Type your question in the chat input at the bottom
+2. Press Enter to send
+3. View the AI's response based on your documents
+4. Click "View Source Documents" to see which parts of your documents were used
+
+### Step 3: Multi-Turn Conversation
+
+- Continue asking follow-up questions
+- The system remembers previous conversation context
+- Upload more documents anytime to expand the knowledge base
+
+### Step 4: Clear and Restart
+
+- Click "🗑️ Clear All" in the sidebar to:
+  - Remove all uploaded documents
+  - Clear conversation history
+  - Reset the vector database
+
+## 🏗️ Architecture
+
+### Document Processing Pipeline
+
+```
+Upload Files → Load Documents → Chunk Text → Create Embeddings → Store in ChromaDB
+```
+
+### Query Processing Pipeline
+
+```
+User Question → Retrieve Relevant Chunks → Generate Answer with LLM → Display with Sources
+```
+
+### Key Components
+
+1. **Document Loaders** (`langchain.document_loaders`)
+   - `TextLoader`: Handles `.txt` files
+   - `PyPDFLoader`: Handles `.pdf` files
+
+2. **Text Splitter** (`langchain.text_splitter.RecursiveCharacterTextSplitter`)
+   - Chunk size: 1000 characters
+   - Chunk overlap: 200 characters
+   - Separators: `["\n\n", "\n", " ", ""]`
+
+3. **Embeddings** (`langchain_community.embeddings.HuggingFaceEmbeddings`)
+   - Model: `all-MiniLM-L6-v2`
+   - Runs locally (no API calls needed)
+   - Converts text to 384-dimensional vectors
+
+4. **Vector Store** (`langchain.vectorstores.Chroma`)
+   - In-memory storage for fast performance
+   - Enables semantic search
+   - No persistence (resets on app restart)
+
+5. **Retrieval Chain** (`langchain.chains.ConversationalRetrievalChain`)
+   - Retrieves top 3 most relevant chunks
+   - Generates answers using GPT-4o
+   - Maintains conversation history
+
+## 📝 Chunking Strategy Explanation
+
+**Why do we chunk documents?**
+- Large documents exceed LLM context window limits
+- Smaller chunks enable more precise retrieval
+- Better performance and accuracy
+
+**Our Strategy:**
+- **Chunk Size**: 1000 characters
+  - Large enough to maintain context
+  - Small enough for precise retrieval
   
-## Running a Streamlit App on Codespaces  
-Follow these steps to launch and view your Streamlit app in GitHub Codespaces:
-1. **Open the terminal** inside your Codespace.
-2. Run the command:  
-   ```bash
-   streamlit run your-file-name.py
-   ```  
-   **(Replace `your-file-name.py` with the actual name of your Streamlit app file, e.g., `hello_app.py`.)**
-3. After pressing **Enter**, a popup should appear in the bottom-right corner of Codespace editor.  
-   - Click **“Open in Browser”** to view your app.  
+- **Overlap**: 200 characters
+  - Prevents losing context at chunk boundaries
+  - Ensures related information stays connected
 
-   ⚠️ *If you miss the popup:*  
-   - Press **Ctrl + C** in the terminal to stop the app.  
-   - Rerun the command from step 2 — the popup should appear again.
-4. A new browser tab will open, showing the interface of your Streamlit app.
-5. **Make changes to your code** in the Codespace editor.  
-   - Refresh the browser tab to see the updated version of your app.  
+- **Separators**: `["\n\n", "\n", " ", ""]`
+  - Prioritizes splitting on paragraph breaks
+  - Falls back to line breaks, then spaces
+  - Preserves semantic meaning
 
-## Setting Your API Key in GH Codespaces
-You will receive an individual API Key for class assignments. To prevent accidental exposure online, please follow the steps below to securely insert your key in the terminal.
-1. **Open the terminal** inside your Codespace.
-2. Run the command to temporarily set your API Key for this session:  
-   ```bash
-   export API_KEY="your_actual_API_KEY"
-   ```
-3. If you want to run the Streamlit app and set up the key at the same time, run both commands together:
-   ```bash
-   API_KEY="your_actual_API_KEY" streamlit run your-file-name.py
-   ```
+## 🔧 Configuration Changes
 
-## Troubleshooting
-- The Jupyter extension should install automatically. If you still cannot select a Python kernel on Jupyter Notebook: Go to the left sidebar >> **Extensions** >> search for **Jupyter** >> reload window (or reinstall it).   
+### Changes to `requirements.txt`
+
+Added the following packages for RAG functionality:
+
+```
+chromadb>=0.4.0           # Vector database
+sentence-transformers>=2.2.0  # Local embeddings
+```
+
+All other dependencies were already present in the provided template.
+
+### No Changes to `.devcontainer`
+
+The provided devcontainer configuration works perfectly for this application.
+
+## 💡 Design Decisions
+
+### 1. HuggingFace Embeddings vs OpenAI Embeddings
+
+**Decision**: Use HuggingFace `all-MiniLM-L6-v2` model for embeddings
+
+**Rationale**:
+- Cornell's API had compatibility issues with OpenAI embedding model names
+- Local embeddings eliminate API dependency and costs
+- `all-MiniLM-L6-v2` is fast, lightweight, and performs well for RAG
+- No additional API calls needed for embeddings
+
+### 2. In-Memory ChromaDB
+
+**Decision**: Use ephemeral (in-memory) ChromaDB instead of persistent storage
+
+**Rationale**:
+- Avoids file permission issues in Codespace environment
+- Faster performance (no disk I/O)
+- Simpler cleanup process
+- Documents reprocess on restart (acceptable for demo/assignment)
+
+### 3. GPT-4o for Response Generation
+
+**Decision**: Use `openai.gpt-4o` model
+
+**Rationale**:
+- Better understanding and response quality than GPT-3.5
+- Available through Cornell's API
+- Optimal balance of performance and capability
+
+## 🎯 Requirements Checklist
+
+- ✅ **Requirement 1**: Uses provided Codespace setup (documented changes above)
+- ✅ **Requirement 2**: File upload for `.txt` files implemented
+- ✅ **Requirement 3.1**: Document chunking with RecursiveCharacterTextSplitter
+- ✅ **Requirement 3.2**: RAG pipeline with ChromaDB and LangChain
+- ✅ **Requirement 3.3**: Conversational interface with chat history
+- ✅ **Requirement 4**: Support for both `.txt` and `.pdf` files
+- ✅ **Requirement 5**: Multiple document upload support
+
+## 🐛 Troubleshooting
+
+### Issue: "Module not found" errors
+
+**Solution**: Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### Issue: Numpy compatibility errors
+
+**Solution**: Reinstall numpy with compatible version
+```bash
+pip install --force-reinstall numpy==1.24.3
+```
+
+### Issue: "Readonly database" error
+
+**Solution**: Click "Clear All" button or refresh the browser page
+
+### Issue: API key errors
+
+**Solution**: 
+- Verify your API key is set in devcontainer.json or environment
+- Check the base URL matches your endpoint
+- Ensure you have access to the API
+
+### Issue: PDF not loading
+
+**Solution**:
+- Ensure the PDF contains extractable text (not just images)
+- Try a different PDF file
+- Check the console for specific error messages
+
+### Issue: Slow first-time loading
+
+**Solution**:
+- First run downloads the HuggingFace model (~80MB)
+- Subsequent runs will be much faster
+- This is normal and only happens once
+
+## 📚 Additional Resources
+
+- [LangChain Documentation](https://python.langchain.com/)
+- [Streamlit Documentation](https://docs.streamlit.io/)
+- [ChromaDB Documentation](https://docs.trychroma.com/)
+- [Sentence Transformers](https://www.sbert.net/)
+- [OpenAI API Documentation](https://platform.openai.com/docs)
+
+## 👨‍💻 Author
+
+[Your Name]  
+Course: INFO 5940  
+Assignment: Assignment 1 - RAG Application  
+Date: [Current Date]
+
+## 📄 License
+
+This project is for educational purposes as part of INFO 5940.

@@ -10,10 +10,11 @@
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
+	
 
 	"remoteEnv": {
-		"API_KEY": "",
-		"OPENAI_API_KEY": "",
+		"API_KEY": "${localEnv:API_KEY}",
+		"OPENAI_API_KEY": "${localEnv:OPENAI_API_KEY}",
 		"BASE_URL": "https://api.ai.it.cornell.edu/",
 		"OPENAI_BASE_URL": "https://api.ai.it.cornell.edu/",
 		"TZ": "America/New_York"
