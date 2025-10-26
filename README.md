@@ -19,8 +19,7 @@ All dependencies are listed in `requirements.txt`. Key packages include:
 - **Streamlit**: Web interface
 - **LangChain**: RAG pipeline framework
 - **ChromaDB**: Vector database for document storage
-- **OpenAI**: Language model (GPT-4o)
-- **Sentence Transformers**: Local embeddings (HuggingFace)
+- **OpenAI**: Language model (GPT-4o) and embeddings
 - **PyPDF**: PDF file parsing
 
 ## 🚀 Setup Instructions
@@ -39,11 +38,6 @@ The Codespace environment should automatically install dependencies from `requir
 
 ```bash
 pip install -r requirements.txt
-```
-
-**Note:** If you encounter numpy compatibility issues, run:
-```bash
-pip install --force-reinstall numpy==1.24.3
 ```
 
 ### 3. API Key Configuration
@@ -125,10 +119,10 @@ User Question → Retrieve Relevant Chunks → Generate Answer with LLM → Disp
    - Chunk overlap: 200 characters
    - Separators: `["\n\n", "\n", " ", ""]`
 
-3. **Embeddings** (`langchain_community.embeddings.HuggingFaceEmbeddings`)
-   - Model: `all-MiniLM-L6-v2`
-   - Runs locally (no API calls needed)
-   - Converts text to 384-dimensional vectors
+3. **Embeddings** (`langchain_openai.OpenAIEmbeddings`)
+   - Model: `openai.text-embedding-3-large`
+   - Uses Cornell's API endpoint
+   - Converts text to vector embeddings for semantic search
 
 4. **Vector Store** (`langchain.vectorstores.Chroma`)
    - In-memory storage for fast performance
@@ -169,7 +163,8 @@ Added the following packages for RAG functionality:
 
 ```
 chromadb>=0.4.0           # Vector database
-sentence-transformers>=2.2.0  # Local embeddings
+langchain-chroma>=0.1.0   # ChromaDB integration
+langchain-openai>=0.1.0   # OpenAI embeddings and models
 ```
 
 All other dependencies were already present in the provided template.
@@ -180,15 +175,14 @@ The provided devcontainer configuration works perfectly for this application.
 
 ## 💡 Design Decisions
 
-### 1. HuggingFace Embeddings vs OpenAI Embeddings
+### 1. OpenAI Embeddings with Cornell API
 
-**Decision**: Use HuggingFace `all-MiniLM-L6-v2` model for embeddings
+**Decision**: Use `openai.text-embedding-3-large` model via Cornell's API
 
 **Rationale**:
-- Cornell's API had compatibility issues with OpenAI embedding model names
-- Local embeddings eliminate API dependency and costs
-- `all-MiniLM-L6-v2` is fast, lightweight, and performs well for RAG
-- No additional API calls needed for embeddings
+- Model name provided by instructor works with Cornell's API endpoint
+- High-quality embeddings for accurate semantic search
+- Consistent with course infrastructure
 
 ### 2. In-Memory ChromaDB
 
@@ -253,28 +247,19 @@ pip install --force-reinstall numpy==1.24.3
 - Try a different PDF file
 - Check the console for specific error messages
 
-### Issue: Slow first-time loading
-
-**Solution**:
-- First run downloads the HuggingFace model (~80MB)
-- Subsequent runs will be much faster
-- This is normal and only happens once
-
 ## 📚 Additional Resources
 
 - [LangChain Documentation](https://python.langchain.com/)
 - [Streamlit Documentation](https://docs.streamlit.io/)
 - [ChromaDB Documentation](https://docs.trychroma.com/)
-- [Sentence Transformers](https://www.sbert.net/)
 - [OpenAI API Documentation](https://platform.openai.com/docs)
 
 ## 👨‍💻 Author
 
-[Your Name]  
+Matthew Lee
 Course: INFO 5940  
 Assignment: Assignment 1 - RAG Application  
-Date: [Current Date]
-
+Date: 10/26/25
 ## 📄 License
 
 This project is for educational purposes as part of INFO 5940.

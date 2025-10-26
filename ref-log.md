@@ -34,15 +34,6 @@ This document logs all external sources, tools, and AI assistance used in comple
   - Learning about persistence with `persist_directory`
   - Integration with LangChain
 
-### Sentence Transformers Documentation
-- **Source**: https://www.sbert.net/
-- **Usage**:
-  - Understanding local embedding models
-  - Model selection and configuration
-  - Integration with LangChain
-- **Specific Model Used**: all-MiniLM-L6-v2
-  - https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2
-
 ### OpenAI API Documentation
 - **Source**: https://platform.openai.com/docs
 - **Usage**:
@@ -126,12 +117,15 @@ This document logs all external sources, tools, and AI assistance used in comple
      - Session state
      - Sidebar layout
 
-5. **Sentence Transformers** (v2.2.0+)
-   - **Purpose**: Local embedding model
-   - **Usage**: Convert text to vector embeddings without API calls
-   - **Model**: all-MiniLM-L6-v2 (384-dimensional embeddings)
+5. **langchain-openai** (v0.1.0+)
+   - **Purpose**: OpenAI integration for LangChain
+   - **Usage**: OpenAI embeddings and chat models
 
-6. **PyPDF** (v4.0+)
+6. **langchain-chroma** (v0.1.0+)
+   - **Purpose**: ChromaDB integration for LangChain
+   - **Usage**: Vector store implementation
+
+7. **PyPDF** (v4.0+)
    - **Purpose**: PDF file parsing
    - **Usage**: Extract text from PDF documents
 
@@ -157,28 +151,25 @@ This document logs all external sources, tools, and AI assistance used in comple
 - **Usage**: Troubleshooting specific errors
 - **Topics**:
   - ChromaDB readonly database errors
-  - Numpy/Pandas compatibility issues with sentence-transformers
   - LangChain integration patterns
+  - OpenAI API configuration
 
 ## 📊 Design Decisions & Rationale
 
-### 1. Embedding Strategy: HuggingFace vs OpenAI
+### 1. Embedding Strategy: OpenAI Embeddings
 
-**Decision**: Use HuggingFace Embeddings (`all-MiniLM-L6-v2`) instead of OpenAI Embeddings
+**Decision**: Use OpenAI Embeddings (`openai.text-embedding-3-large`) via Cornell's API
 
 **Sources**: 
-- HuggingFace Documentation: https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2
-- Sentence Transformers Documentation: https://www.sbert.net/
+- Professor's example code
+- Cornell API documentation
+- LangChain OpenAI Integration: https://python.langchain.com/docs/integrations/text_embedding/openai
 
 **Rationale**: 
-- **Problem**: Cornell's API endpoint had compatibility issues with OpenAI's standard embedding model names (`text-embedding-ada-002`, `text-embedding-3-small`, etc.)
-- **Solution**: Switched to local HuggingFace embeddings which run on the server without API calls
-- **Benefits**:
-  - No dependency on OpenAI API for embeddings
-  - Faster processing (no network calls)
-  - Free (no embedding API costs)
-  - `all-MiniLM-L6-v2` is widely used and performs well for RAG applications
-- **Trade-off**: Slightly lower quality than OpenAI embeddings, but acceptable for this use case
+- **Professor's Recommendation**: Model name provided by instructor (`openai.text-embedding-3-large`) works correctly with Cornell's API
+- **High Quality**: OpenAI's embedding models provide excellent semantic understanding
+- **Consistency**: Aligns with course infrastructure and examples
+- **Integration**: Seamless integration with LangChain using `langchain_openai` package
 
 ### 2. Vector Database Storage: Persistent vs In-Memory
 
@@ -248,7 +239,7 @@ I confirm that:
 
 ---
 
-**Student Name**: [Your Name]
-**Date**: [Date]
+**Student Name**: Matthew Lee
+**Date**: 10/26/25
 **Course**: INFO 5940
 **Assignment**: Assignment 1 - RAG Application

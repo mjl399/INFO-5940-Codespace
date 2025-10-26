@@ -18,8 +18,8 @@ try:
     # standard LangChain import paths (works with modern langchain + langchain-core)
     from langchain.document_loaders import TextLoader, PyPDFLoader
     from langchain.text_splitter import RecursiveCharacterTextSplitter
-    from langchain.vectorstores import Chroma
-    from langchain_community.embeddings import HuggingFaceEmbeddings
+    from langchain_chroma import Chroma  # Updated import
+    from langchain_openai import OpenAIEmbeddings  # Updated import
     from langchain.chat_models import ChatOpenAI
     from langchain.chains import ConversationalRetrievalChain
     from langchain.memory import ConversationBufferMemory
@@ -149,7 +149,7 @@ def chunk_documents(documents):
 def create_vectorstore(chunks):
     """
     Create or update ChromaDB vector store with document chunks.
-    Uses HuggingFace embeddings (runs locally, no API needed)
+    Uses OpenAI embeddings via Cornell's API
     
     Args:
         chunks (list): List of document chunks
@@ -157,16 +157,17 @@ def create_vectorstore(chunks):
     Returns:
         Chroma: ChromaDB vectorstore instance
     """
-    # Initialize HuggingFace embeddings (runs locally - no API needed!)
-    embeddings = HuggingFaceEmbeddings(
-        model_name="all-MiniLM-L6-v2"
+    # Initialize OpenAI embeddings using professor's recommended model
+    embeddings = OpenAIEmbeddings(
+        model="openai.text-embedding-3-large",
+        openai_api_key=API_KEY,
+        base_url=BASE_URL
     )
     
     # Create or update the vector store
     if st.session_state.vectorstore is None:
         # First time: create new vectorstore with a fresh client
         import chromadb
-        from chromadb.config import Settings
         
         # Create a fresh ephemeral client (in-memory)
         client = chromadb.EphemeralClient()
