@@ -63,8 +63,7 @@ If running locally or want to use your own keys:
 
 ```bash
 # .env file
-OPENAI_API_KEY=your-api-key-here
-BASE_URL=https://api.ai.it.cornell.edu
+API_KEY=your-api-key-here
 ```
 
 2. The application will automatically load it on startup
