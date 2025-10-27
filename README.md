@@ -42,7 +42,11 @@ pip install -r requirements.txt
 
 ### 3. API Key Configuration
 
-The application reads API keys from environment variables (configured in `.devcontainer/devcontainer.json`):
+The application reads API keys from environment variables. There are two ways to configure them:
+
+#### **Option A: Using devcontainer.json (Default for Codespaces)**
+
+API keys are pre-configured in `.devcontainer/devcontainer.json`:
 
 - `API_KEY` or `OPENAI_API_KEY`: Your Cornell/OpenAI API key
 - `BASE_URL` or `OPENAI_BASE_URL`: API endpoint (default: `https://api.ai.it.cornell.edu`)
@@ -51,10 +55,30 @@ The application reads API keys from environment variables (configured in `.devco
 - API keys are pre-configured in the devcontainer
 - No manual configuration needed
 
-**For Others:**
-Set your API key as an environment variable:
+#### **Option B: Using .env file (For local development)**
+
+If running locally or want to use your own keys:
+
+1. Create a `.env` file in the project root:
+
 ```bash
-export OPENAI_API_KEY="your-api-key-here"
+# .env file
+OPENAI_API_KEY=your-api-key-here
+BASE_URL=https://api.ai.it.cornell.edu
+```
+
+2. The application will automatically load it on startup
+
+3. **Important**: Never commit `.env` to git (it's in `.gitignore`)
+
+**For Non-Cornell Users:**
+
+If using standard OpenAI API:
+
+```bash
+# .env file
+OPENAI_API_KEY=sk-your-openai-key
+BASE_URL=https://api.openai.com/v1
 ```
 
 ### 4. Run the Application
@@ -256,10 +280,11 @@ pip install --force-reinstall numpy==1.24.3
 
 ## 👨‍💻 Author
 
-Matthew Lee
+[Your Name]  
 Course: INFO 5940  
 Assignment: Assignment 1 - RAG Application  
-Date: 10/26/25
+Date: [Current Date]
+
 ## 📄 License
 
 This project is for educational purposes as part of INFO 5940.

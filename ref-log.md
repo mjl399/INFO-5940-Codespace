@@ -59,16 +59,6 @@ This document logs all external sources, tools, and AI assistance used in comple
   
 **Human Oversight**: All generated code was reviewed, tested, and modified as needed. Understanding of RAG concepts and implementation decisions were verified through documentation.
 
-### ChatGPT (Optional - if used)
-- **Tool**: ChatGPT
-- **Usage**: [Describe if used]
-- **Rationale**: [Why used]
-
-### GitHub Copilot (Optional - if used)
-- **Tool**: GitHub Copilot
-- **Usage**: [Describe if used]
-- **Rationale**: [Why used]
-
 ## 📖 Course Materials
 
 ### Class Repository

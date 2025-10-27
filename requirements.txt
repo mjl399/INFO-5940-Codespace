@@ -20,6 +20,9 @@ langchain-chroma>=0.1.0
 # OpenAI Integration
 langchain-openai>=0.1.0
 
+# Environment variables
+python-dotenv>=1.0.0
+
 cfn_flip
 cfn-lint
 ipykernel

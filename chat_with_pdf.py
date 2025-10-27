@@ -36,11 +36,29 @@ import os
 from pathlib import Path
 import shutil
 
+# Load environment variables from .env file if it exists
+try:
+    from dotenv import load_dotenv
+    load_dotenv()  # This loads .env file if present
+except ImportError:
+    pass  # python-dotenv not installed, skip
+
 # ============================================================================
 # API CONFIGURATION - Read from environment (simple like the example)
 # ============================================================================
 API_KEY = os.environ.get("OPENAI_API_KEY") or os.environ.get("API_KEY")
 BASE_URL = os.environ.get("OPENAI_BASE_URL") or os.environ.get("BASE_URL") or "https://api.ai.it.cornell.edu"
+
+# Debug: Show where API key is loaded from (remove before submission)
+if API_KEY:
+    import sys
+    print(f"🔑 API Key loaded: {API_KEY[:8]}...{API_KEY[-4:]}", file=sys.stderr)
+    if os.path.exists(".env"):
+        print("📄 .env file detected", file=sys.stderr)
+    else:
+        print("⚙️ Using environment variables (devcontainer)", file=sys.stderr)
+else:
+    print("❌ No API key found!", file=sys.stderr)
 
 # ============================================================================
 # PAGE CONFIGURATION
