@@ -70,16 +70,6 @@ API_KEY=your-api-key-here
 
 3. **Important**: Never commit `.env` to git (it's in `.gitignore`)
 
-**For Non-Cornell Users:**
-
-If using standard OpenAI API:
-
-```bash
-# .env file
-OPENAI_API_KEY=sk-your-openai-key
-BASE_URL=https://api.openai.com/v1
-```
-
 ### 4. Run the Application
 
 ```bash
