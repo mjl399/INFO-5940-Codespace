@@ -67,4 +67,3 @@ I added **formatting guidelines** directly in the agent instructions after disco
 - **Regular Expressions (regex) documentation**: Used to implement the dollar sign escape function for post-processing agent outputs.
 
 The assignment template provided excellent scaffolding with the tool logging infrastructure and agent runner, which made it easy to focus on the core challenge of prompt engineering for multi-agent coordination. The real-time tool call visualization in the sidebar was particularly helpful for debugging and understanding agent behavior.
-
