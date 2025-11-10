@@ -61,7 +61,6 @@ I added **formatting guidelines** directly in the agent instructions after disco
  - Implementing regex-based post-processing solutions
  - Generating boilerplate code and suggesting improvements
  - **GitHub/Git Documentation**: For understanding branch management, forking workflows, and syncing upstream repositories.
- - Helped to write my ref-log.md
 
 - **Streamlit Documentation**: For understanding the UI framework, markdown rendering behavior, and how the sidebar logging system worked.
 
